@@ -1,7 +1,9 @@
+
 const express = require('express')
 const body_parser = require('body-parser')
 const {Patient} = require('./models/patient')
 const {Donor} = require('./models/donor')
+const {shelf} = require('./locals/shelf')
 
 var app = express()
 
@@ -27,7 +29,7 @@ app.post('/register_patient', (req,res,next) => {
         })
     }
     else{
-        res.send(400).send('parameters missing')
+        res.status(400).send('parameters missing')
     }
 })
 
@@ -51,9 +53,20 @@ app.post('/register_donor', (req,res,next) => {
         })
     }
     else{
-        res.send(400).send('parameters missing')
+        res.status(400).send('parameters missing')
     }
 })
+
+app.post("/search", (req,res,next) => {
+    if(req.potential){
+        
+        
+        
+    }else{
+        res.status(400).send('no objects found')
+    }
+})
+
 
 app.listen(3000, () => {
     console.log('listening on port 3000')
