@@ -27,7 +27,7 @@ app.post('/register_patient', (req,res,next) => {
         })
     }
     else{
-        res.send(400).send('parameters missing')
+        res.status(400).send('parameters missing')
     }
 })
 

@@ -31,6 +31,7 @@ var patientSchema = mongoose.Schema({
     severity: {
         type: String,
         minlength: 1,
+        default: null
     },
     organ_needed: {
         type: String,
