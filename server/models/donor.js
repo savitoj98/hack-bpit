@@ -4,7 +4,6 @@ var donorSchema = mongoose.Schema({
     hospital_location: {
         type: String,
         minlength: 1,
-        required: true,
         trim: true,
     },
     name: {
@@ -35,7 +34,7 @@ var donorSchema = mongoose.Schema({
         trim: true,
         required: true
     },
-    organ: [{
+    organs: [{
         organ_name: {
             type: String,
             required: true,

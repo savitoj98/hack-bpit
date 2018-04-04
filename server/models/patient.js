@@ -4,7 +4,6 @@ var patientSchema = mongoose.Schema({
     hospital_location: {
         type: String,
         minlength: 1,
-        required: true,
         trim: true,
     },
     name: {
