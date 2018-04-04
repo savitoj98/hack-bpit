@@ -1,31 +1,31 @@
 const {mongoose} = require('../db/mongoose')
 
-var LiverSchema = mongoose.Schema({
+var HeartSchema = mongoose.Schema({
     patientID : {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         minlength:1
     },
     parameters : [{
-        tot_bilirubin : {
+        chol : {
             type: Number,
             required: true
         }, 
-        dir_bilirubin : {
+        sugar : {
             type: Number,
             required: true
         }, 
-        tot_proteins : {
+        blood_pres : {
             type : Number, 
             required: true
         },
-        ag_ratio : {
-            type : Number,
+        family_his : {
+            type : Boolean,
             required: true
         }
     }]
 })
 
-var Liver = mongoose.Schema('Liver', LiverSchema)
+var Heart = mongoose.Schema('Heart', HeartSchema)
 
-module.exports = {Liver}
+module.exports = {Heart}

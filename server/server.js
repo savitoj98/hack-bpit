@@ -5,6 +5,7 @@ const {Donor} = require('./models/donor')
 
 var app = express()
 
+app.use(body_parser())
 
 
 
