@@ -47,6 +47,7 @@ var patientSchema = mongoose.Schema({
     }
 })
 
+
 var Patient = mongoose.model('patients', patientSchema)
 
 module.exports = {Patient}

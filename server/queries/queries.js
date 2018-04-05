@@ -7,19 +7,18 @@ const express = require('express')
 var app = express()
 
 function bloodGroup(bg) {
-    if(bg == 'O'){
+    if(bg == 'O' || bg == 'O-' || bg == "O+"){
         return ['O', 'A', 'B', 'AB']
     }
-    if(bg == 'A'){
+    if(bg == 'A' || bg == 'A+' || bg == 'A-'){
         return ['A', 'AB']
     }
-    if(bg == 'B'){
+    if(bg == 'B' || bg == 'B+' || bg == 'B-'){
         return ['B','AB']
     }
-    if(bg == 'AB'){
+    if(bg == 'AB' || bg == 'AB+' || bg == 'AB-'){
         return ['AB']
     }
-    
 }
 
 var organArray = ['heart','kidney','liver']
