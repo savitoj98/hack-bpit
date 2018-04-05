@@ -137,8 +137,33 @@ app.post("/search", potential, (req,res,next) => {
     }else{
         res.status(400).send('no objects found')
     }
-})
+});
 
+var util = require("util");
+
+app.get('/name',(req,res) => {
+    var send_test = [[35, 0, 1.6, 0.7, 157, 15, 44, 5.2, 2.5, 0.9]]
+    var {spawn} = require("child_process");
+    // console.log('sa')
+    var process = spawn('python', ["./liver_model_script.py"]);
+    // console.log(process.stdout)
+    util.log('readingin')
+    process.stdout.on('data', function(data) {
+        //console.log('qs')
+        res.send(data.toString());
+        console.log(data.toString());
+        //res.end('end');
+    } )
+    process.stderr.on('err', function(err){
+        console.log(err)
+    })
+});
+// var PythonShell = require('python-shell');
+
+// PythonShell.run('liver_model_script.py', function (err) {
+//   if (err) throw err;
+//   console.log('finished');
+// });
 
 app.listen(3000, () => {
     console.log('listening on port 3000')
