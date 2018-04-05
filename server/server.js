@@ -11,6 +11,13 @@ const axios = require('axios')
 var app = express()
 
 app.use(body_parser.json())
+app.use(body_parser.urlencoded({extended:true}))
+
+app.use(express.static('Public'))
+
+app.get('/' , (req,res,next) => {
+    res.sendfile('index.html')
+})
 
 app.post('/register_patient', (req,res,next) => {
     var body = req.body
@@ -39,13 +46,16 @@ app.post('/register_patient', (req,res,next) => {
 app.post('/register_donor', (req,res,next) => {
     var body = req.body
     if (body.name && body.age && body.gender && body.address && body.organs && body.blood_group)
-    {
+    {   var array = []
+        for(var i=0 ; i<body.organs.length; i++){
+            array.push({organ_name: body.organs[i]})
+        }
         var newdonor  = new Donor({
             name : body.name,
             age: body.age,
             gender: body.gender,
             address: body.address,
-            organs: body.organs,
+            organs: array,
             blood_group: body.blood_group
         })
 
@@ -120,8 +130,6 @@ app.post("/search", potential, (req,res,next) => {
             });
             
          });
-            
-              
         }).catch((e) => {
             res.status(400).send(e)
         })
