@@ -2,7 +2,9 @@ const {mongoose} = require('../db/mongoose')
 
 const {Patient} = require('../models/patient')
 const {Donor} = require('../models/donor')
+const express = require('express')
 
+var app = express()
 
 function bloodGroup(bg) {
     if(bg == 'O'){
@@ -20,16 +22,24 @@ function bloodGroup(bg) {
     
 }
 
+var organArray = ['heart','kidney','liver']
 
-
+function potential (req,res,next){
 
 Donor.findOne({
-    _id: '5ac509a38a8fb13804a59a8a'
+    _id: '5ac522da5803514e0fe18d80',
+    "organs.organ_name" : {$all: organArray} 
+
 }).then((organInfo) => {
+    if(!organInfo)
+    {Promise.reject()}
+
     return organInfo;
 }).then((organInfo) => {
     Patient.find({
-        organ_needed: organInfo.organs[0].organ_name,
+        organ_needed: {
+            $in: organArray
+        }, //donors
         blood_group: {
             $in: bloodGroup(organInfo.blood_group)
         }
@@ -38,9 +48,16 @@ Donor.findOne({
                 return b.severity - a.severity
             });
              console.log(sorted_severity)
+             req.potential = sorted_severity
+             next()
          });
+}).catch((e) => {
+    console.log(e)
 });
 
+}
+
+module.exports = {potential}
 
 // Patient.find({
 //     organ_needed: donor_organ

@@ -41,7 +41,7 @@ var donorSchema = mongoose.Schema({
             minlength: 1
         },
         organ_health: {
-            type: String,
+            type: Number,
             minlength: 1
         },
         organ_life: {
