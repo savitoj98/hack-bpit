@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ORGAN DONATION</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+
+  <!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+		
+	<div class="container">
+
+		<h1 style="margin: auto; margin-top: 50px; text-align:center; margin-bottom: 30px;">Donor Registration</h1>
+
+		<form method="POST" action="/register_donor" id="donor_form">
+			<div class="form-group">
+			  <label for="name">Name:</label>
+			  <input type="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name" name="name" required>
+			</div>
+			<div class="form-group">
+			  <label for="age">Age</label>
+			  <input type="text" class="form-control" id="age" placeholder="age" name="age" required>
+			</div>
+
+			<div class="form-group">
+				<label for="Address">Address</label>
+				<input type="text" class="form-control" id="Address" placeholder="Address" name="address" required>
+			  </div>
+
+			<h4>Select your gender</h4>  
+			  <div class="form-check">
+				<input class="form-check-input" type="radio" name="gender" id="exampleRadios1" value="M" checked>
+				<label class="form-check-label" for="exampleRadios1">
+				  Male
+				</label>
+			  </div>
+			  <div class="form-check">
+				<input class="form-check-input" type="radio" name="gender" id="exampleRadios2" value="F">
+				<label class="form-check-label" for="exampleRadios2">
+				  Female
+				</label>
+			  </div>
+			  <div class="form-group">
+				<label for="blood">Enter your blood group</label>
+				<input type="text" class="form-control" id="blood" aria-describedby="emailHelp" placeholder="Blood Group" required name="blood_group">
+			  </div>
+
+			  <h4>Select Organs you want to donate</h4>  
+			  <div class="form-check">
+				<input class="form-check-input" type="checkbox" name="organs" id="exampleRadios1" value="kidney">
+				<label class="form-check-label" for="exampleRadios1">
+				  kidney
+				</label>
+			  </div>
+			  <div class="form-check">
+				<input class="form-check-input" type="checkbox" name="organs" id="exampleRadios2" value="heart">
+				<label class="form-check-label" for="exampleRadios2">
+				  heart
+				</label>
+			  </div>
+			  <div class="form-check">
+				<input class="form-check-input" type="checkbox" name="organs" id="exampleRadios2" value="liver">
+				<label class="form-check-label" for="exampleRadios2">
+				  liver
+				</label>
+			  </div>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		  </form>
+	</div>
+
+	
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Flexslider -->
+	<script src="js/jquery.flexslider-min.js"></script>
+	<!-- Owl carousel -->
+	<script src="js/owl.carousel.min.js"></script>
+	<!-- Magnific Popup -->
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/magnific-popup-options.js"></script>
+	<!-- Date Picker -->
+	<script src="js/bootstrap-datepicker.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+
+	<script>
+		$('.btn').click(function(event){
+			event.preventDefault()
+
+			console.log($('#donor_form').serialize())
+			$.ajax({
+				method: "POST",
+				url: '/register_donor',
+				data: $('#donor_form').serialize(),
+				success: function(data){
+					alert("Successfully Registered\n Your Donor Id is:"+data._id)
+				},
+				error: function(e){
+					console.log(e)
+				}
+			})
+		})
+	</script>
+
+	</body>
+</html>
+

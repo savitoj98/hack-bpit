@@ -11,9 +11,39 @@ const axios = require('axios')
 var app = express()
 
 app.use(body_parser.json())
+app.use(body_parser.urlencoded({extended:true}))
+
+app.use(express.static('../Public'))
+
+app.get('/' , (req,res,next) => {
+    res.sendFile('index.html')
+})
+
+// function updateSeverity(id){
+//     var send_test = [[35, 0, 1.6, 0.7, 157, 15, 44, 5.2, 2.5, 0.9]]
+//     var {spawn} = require("child_process");
+//     // console.log('sa')
+//     var process = spawn('python3', ["./liver_model_script.py"]);
+//     // console.log(process.stdout)
+//     util.log('readingin')
+//     process.stdout.on('data', function(data) {
+//         //console.log('qs')
+//         res.send(data.toString());
+//         console.log(data.toString());
+//         //res.end('end');
+//     } )
+//     process.stderr.on('err', function(err){
+//         console.log(err)
+//     })
+
+    
+// }
+
+var pid
 
 app.post('/register_patient', (req,res,next) => {
     var body = req.body
+    console.log(body)
     if (body.name && body.age && body.gender && body.address && body.organ && body.blood_group)
     {
         var newpatient  = new Patient({
@@ -26,7 +56,19 @@ app.post('/register_patient', (req,res,next) => {
         })
 
         newpatient.save().then((doc) => {
-            res.status(200).send(doc)
+            pid = doc._id
+            if(doc.organ_needed == 'kidney')
+            {
+                res.redirect('/kidney')
+            }
+            else if(doc.organ_needed == 'liver')
+            {
+                res.redirect('/liver')
+            }
+            else{
+                
+                res.redirect('/heart')
+            }
         }).catch((e) => {
             res.status(400).send(e)
         })
@@ -39,13 +81,16 @@ app.post('/register_patient', (req,res,next) => {
 app.post('/register_donor', (req,res,next) => {
     var body = req.body
     if (body.name && body.age && body.gender && body.address && body.organs && body.blood_group)
-    {
+    {   var array = []
+        for(var i=0 ; i<body.organs.length; i++){
+            array.push({organ_name: body.organs[i]})
+        }
         var newdonor  = new Donor({
             name : body.name,
             age: body.age,
             gender: body.gender,
             address: body.address,
-            organs: body.organs,
+            organs: array,
             blood_group: body.blood_group
         })
 
@@ -120,8 +165,6 @@ app.post("/search", potential, (req,res,next) => {
             });
             
          });
-            
-              
         }).catch((e) => {
             res.status(400).send(e)
         })
@@ -133,16 +176,64 @@ app.post("/search", potential, (req,res,next) => {
 
 var util = require("util");
 
-app.get('/name',(req,res) => {
+app.get('/liver',(req,res) => {
     var send_test = [[35, 0, 1.6, 0.7, 157, 15, 44, 5.2, 2.5, 0.9]]
     var {spawn} = require("child_process");
     // console.log('sa')
-    var process = spawn('python', ["./liver_model_script.py"]);
+    var process = spawn('python3', ["./liver_model_script.py"]);
     // console.log(process.stdout)
     util.log('readingin')
     process.stdout.on('data', function(data) {
         //console.log('qs')
-        res.send(data.toString());
+
+        res.send({data: data.toString(), pid :pid});
+        console.log(data.toString());
+        //res.end('end');
+    } )
+    process.stderr.on('err', function(err){
+        console.log(err)
+    })
+
+
+});
+
+app.get('/kidney',(req,res) => {
+    //var send_test = [[35, 0, 1.6, 0.7, 157, 15, 44, 5.2, 2.5, 0.9]]
+    var {spawn} = require("child_process");
+    // console.log('sa')
+    var process = spawn('python3', ["./kidney_model_script.py"]);
+    // console.log(process.stdout)
+    util.log('readingin')
+    process.stdout.on('data', function(data) {
+        //console.log('qs')
+        res.send({data: data.toString(), pid :pid});
+        console.log(data.toString());
+        //res.end('end');
+    } )
+    process.stderr.on('err', function(err){
+        console.log(err)
+    })
+});
+
+app.post("/update_severity", (req,res,next) => {
+    Patient.findByIdAndUpdate(req.body.pid,{severity : req.body.data*100}, {new : true}).then((doc) => {
+        if(doc){
+            res.status(200).send("data added successfuly")
+        }
+    }).catch((e) => {
+        res.status(400).send(e)
+    })
+})
+app.get('/heart',(req,res) => {
+    // var send_test = [[35, 0, 1.6, 0.7, 157, 15, 44, 5.2, 2.5, 0.9]]
+    var {spawn} = require("child_process");
+    // console.log('sa')
+    var process = spawn('python3', ["./heart_model_script.py"]);
+    // console.log(process.stdout)
+    util.log('readingin')
+    process.stdout.on('data', function(data) {
+        //console.log('qs')
+        res.send({data: data.toString(), pid :pid});
         console.log(data.toString());
         //res.end('end');
     } )
